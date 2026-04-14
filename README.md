@@ -4,7 +4,7 @@
 ## Project Overview
 Цель проекта — оптимизировать детекцию YOLOv8 для задач реального времени. В ходе работы реализован полный цикл конвертации модели и проведено профилирование метрик на различных бэкендах.
 
-## 🛠 Engineering Highlights
+## Engineering Highlights
 *   **Model Transformation:** Оптимизация графа вычислений через цепочку **PyTorch → ONNX → TensorRT**.
 *   **Buffer Management:** Прямое управление памятью GPU с помощью **PyCUDA**: аллокация буферов, асинхронная передача данных (Host-to-Device/Device-to-Host).
 *   **Quantization Impact:** Сравнительный анализ точности и скорости при переходе с FP32 на FP16.
