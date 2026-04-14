@@ -1,28 +1,29 @@
-# High-Performance YOLOv8: TensorRT Optimization & Benchmarking
+# YOLOv8 TensorRT Optimization & Benchmarking
+> Исследование производительности компьютерного зрения: от стандартного PyTorch до кастомных движков TensorRT.
 
-Реализация пайплайна оптимизации компьютерного зрения для задач реального времени. Переход от стандартного PyTorch к высокопроизводительным движкам с анализом системных метрик.
+## Project Overview
+Цель проекта — оптимизировать детекцию YOLOv8 для задач реального времени. В ходе работы реализован полный цикл конвертации модели и проведено профилирование метрик на различных бэкендах.
 
-## Computer Science Highlights
-Проект демонстрирует навыки работы с низкоуровневой оптимизацией GPU:
-*   **Engine Serialization:** Конвертация статического графа PyTorch → ONNX → TensorRT.
-*   **Memory Management:** Прямое управление аллокацией видеопамяти через **PyCUDA** (async memcpy, host-to-device).
-*   **Precision Engineering:** Исследование влияния разрядности (FP32 vs FP16) на пропускную способность и накопление численной ошибки.
-*   **Profiling:** Кастомный бенчмаркинг с учетом "warm-up" итераций для точного замера latency.
+## 🛠 Engineering Highlights
+*   **Model Transformation:** Оптимизация графа вычислений через цепочку **PyTorch → ONNX → TensorRT**.
+*   **Buffer Management:** Прямое управление памятью GPU с помощью **PyCUDA**: аллокация буферов, асинхронная передача данных (Host-to-Device/Device-to-Host).
+*   **Quantization Impact:** Сравнительный анализ точности и скорости при переходе с FP32 на FP16.
+*   **Accurate Benchmarking:** Замеры latency с учетом прогрева (warm-up) и исключения оверхеда на I/O.
 
-## Performance Analysis (Tesla T4)
+## Performance Benchmarks (Tesla T4)
 
 
-| Format | Runtime | Latency (ms) | Speedup | Max Diff (vs PT) |
+| Backend | Device | Latency | Speedup | Max Difference |
 | :--- | :--- | :--- | :--- | :--- |
-| **PyTorch** | CPU | 86.53 | 1.0x | - |
-| **ONNX** | CPU | 64.32 | 1.34x | 0.0005 |
-| **TensorRT FP32**| **GPU** | **43.26** | **2.0x** | 0.0006 |
-| **TensorRT FP16**| **GPU** | **39.47** | **2.19x** | 3.0718 |
+| **PyTorch** | CPU | 86.53 ms | 1.0x | — |
+| **ONNX** | CPU | 64.32 ms | 1.34x | 5e-4 |
+| **TensorRT (FP32)** | **GPU** | **43.26 ms** | **2.0x** | 6e-4 |
+| **TensorRT (FP16)** | **GPU** | **39.47 ms** | **2.2x** | 3.07 |
 
-**Key Insight:** Оптимизация через TensorRT на GPU дала двукратный прирост скорости. Переход на FP16 дает дополнительный буст, но требует контроля точности из-за роста `max_diff`.
+> **Summary:** Перенос инференса на TensorRT ускорил обработку в 2 раза. Использование FP16 дает дополнительный прирост, но требует контроля допустимых отклонений (max_diff).
 
 ## Tech Stack
 `Python` • `PyTorch` • `TensorRT` • `ONNX` • `PyCUDA` • `YOLOv8`
 
 ---
-*Developed as a practical study in ML System Engineering.*
+*Сфокусировано на практическом применении ML System Engineering и оптимизации инференса.*
